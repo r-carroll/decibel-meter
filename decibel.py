@@ -4,18 +4,35 @@ import sqlite3
 import numpy as np
 
 def get_decibels():
-    """Get the decibel levels from the microphone."""
+    """Get decibel levels from the Enviro Plus microphone."""
     pa = pyaudio.PyAudio()
-    stream = pa.open(format=pyaudio.paFloat32, channels=1, rate=44100, input=True, frames_per_buffer=1024)
+
+    # Select Enviro Plus microphone (adjust index if needed)
+    index = 4  # Assuming Enviro Plus mic is the third device
+    info = pa.get_device_info_by_index(index)
+    device_name = info['name']
+    if "Enviro+" in device_name:
+        print("Using Enviro Plus microphone:", device_name)
+    else:
+        print("Enviro Plus microphone not found!")
+        return None
+
+    # Open stream with potential adjustments
+    stream = pa.open(format=pyaudio.paInt16,  # Try different audio format
+                     channels=1,
+                     rate=44100,
+                     input=True,
+                     input_device_index=index,
+                     frames_per_buffer=1024)
+
     data = stream.read(1024)
     stream.close()
 
-    # Convert the audio data to float
-    data = np.frombuffer(data, np.float32)
-
-    # Convert the audio data to decibels
+    # Convert audio data to decibels with A-weighting
+    data = np.frombuffer(data, np.int16)  # Adjust for audio format
     amplitude = np.sqrt(np.mean(data**2))
     decibels = 20 * np.log10(amplitude)
+    #decibels_weighted = apply_a_weighting(decibels)  # Apply A-weighting
     return decibels
 
 def save_decibels(decibels):
