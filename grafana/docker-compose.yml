@@ -6,8 +6,15 @@ services:
     restart: unless-stopped
     environment:
     - GF_SERVER_ROOT_URL=http://data.carrollmedia.dev/
+    - GF_SERVER_HTTP_ADDR=
+    - GF_SERVER_HTTP_PORT=3012
+    - GF_SERVER_DOMAIN=carrollmedia.dev
+    - GF_SERVER_CERT_KEY=/etc/grafana/grafana.key
+    - GF_SERVER_CERT_FILE=/etc/grafana/grafana.crt
+    - GF_SERVER_ENFORCE_DOMAIN=False
+    - GF_SERVER_PROTOCOL=https
     ports:
-      - '3000:3012'
+      - '3012:3000'
     volumes:
       - grafana-storage:/var/lib/grafana
 volumes:
