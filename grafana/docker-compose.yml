@@ -2,6 +2,7 @@ version: '3'
 services:
   grafana:
     image: grafana/grafana-oss
+    user: grafana:grafana_group
     container_name: grafana
     restart: unless-stopped
     environment:
