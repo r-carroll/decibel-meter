@@ -250,7 +250,8 @@ class Noise():
                                 self.draw.text((13,0), "Noise Level", font=self.mediumfont, fill=message_colour)
                                 self.draw.text((5, 32), f"{spl:.1f} dB(A)", font=self.largefont, fill=message_colour)
                                 self.disp.display(img)
-                                self.log_db_to_influx(f"{spl:.1f}")
+                                self.log_db_to_influx(format(spl, 1))
+                                self.log_pm_to_influx()
                             elif self.display_type == 1:
                                 # Capture Max sound level once display has been changed for > 2 seconds
                                 if spl >= self.max_spl and (time.time() - self.last_display_change) > 2:
