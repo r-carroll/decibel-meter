@@ -1,1 +1,5 @@
 influxdb-client
+pms5003
+matplotlib
+ltr559
+python-dotenv

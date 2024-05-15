@@ -1,0 +1,14 @@
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+    - GF_SERVER_ROOT_URL=http://data.carrollmedia.dev/
+    ports:
+      - '3000:3012'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+volumes:
+  grafana-storage: {}

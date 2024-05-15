@@ -1,5 +1,6 @@
 import json
 import math
+import os
 import sys
 import time
 from datetime import datetime
@@ -8,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sounddevice as sd
 import st7735
+from dotenv import load_dotenv
 from fonts.ttf import RobotoMedium as UserFont
 from numpy import log10, pi
 from PIL import Image, ImageDraw, ImageFont
@@ -23,6 +25,7 @@ except ImportError:
 
 import influxdb_client
 from influxdb_client.client.write_api import SYNCHRONOUS
+from pms5003 import PMS5003, ReadTimeoutError
 
 print("""Original code from Ross Fowler
 
@@ -168,13 +171,23 @@ class Noise():
             result.append(np.sqrt(np.mean(magnitude[start:end])))
         return result
     
-    def log_to_influx(db_reading):
-      """Logging decibel readings to influx DB"""
+    def get_pm_value(self):
+        pms5003 = PMS5003()
 
-      bucket = "road_noise"
+        try:
+            readings = pms5003.read()
+        except ReadTimeoutError:
+            pms5003 = PMS5003()
+        
+        return readings
+    
+    def log_pm_to_influx(self):
+      """Logging air quality to influx DB"""
+
+      pm_value = self.get_pm_value()
+      bucket = "environmental"
       org = "carrollmedia"
-      token = "<my-token>"
-      # Store the URL of your InfluxDB instance
+      token = os.environ['API_TOKEN']
       url="http://192.168.8.5:8086"
 
       client = influxdb_client.InfluxDBClient(
@@ -185,7 +198,26 @@ class Noise():
 
       write_api = client.write_api(write_options=SYNCHRONOUS)
 
-      p = influxdb_client.Point("home").tag("location", "Central College").field("dbA", db_reading)
+      p = influxdb_client.Point("environment").tag("location", "Central College").field("pm", pm_value)
+      write_api.write(bucket=bucket, org=org, record=p)
+    
+    def log_db_to_influx(self, db_reading):
+      """Logging decibel readings to influx DB"""
+
+      bucket = "environmental"
+      org = "carrollmedia"
+      token = os.environ['API_TOKEN']
+      url="http://192.168.8.5:8086"
+
+      client = influxdb_client.InfluxDBClient(
+        url=url,
+        token=token,
+        org=org
+      )
+
+      write_api = client.write_api(write_options=SYNCHRONOUS)
+
+      p = influxdb_client.Point("environment").tag("location", "Central College").field("dbA", db_reading)
       write_api.write(bucket=bucket, org=org, record=p)
 
     def run(self):
@@ -218,7 +250,7 @@ class Noise():
                                 self.draw.text((13,0), "Noise Level", font=self.mediumfont, fill=message_colour)
                                 self.draw.text((5, 32), f"{spl:.1f} dB(A)", font=self.largefont, fill=message_colour)
                                 self.disp.display(img)
-                                self.log_to_influx((f"{spl:.1f}"))
+                                self.log_db_to_influx(f"{spl:.1f}")
                             elif self.display_type == 1:
                                 # Capture Max sound level once display has been changed for > 2 seconds
                                 if spl >= self.max_spl and (time.time() - self.last_display_change) > 2:
@@ -314,6 +346,7 @@ spl_ref_level = 0.000001 # Sets quiet level reference baseline for dB(A) measure
 spl_thresholds = (70, 90)
 log_sound_data = False # Set to True to log sound data for debugging
 debug_recording_capture = False # Set to True for plotting each recording stream sample
+load_dotenv() 
        
 if __name__ == '__main__': # This is where to overall code kicks off
     noise = Noise(spl_ref_level, log_sound_data, debug_recording_capture, disp, WIDTH, HEIGHT, vsmallfont, smallfont, mediumfont, largefont, back_colour, display_type, img, draw)
