@@ -1,0 +1,8 @@
+[Unit]
+Description=Decibel Meter
+After=multi-user.target[Service]
+Type=simple
+Restart=always
+ExecStart=/home/pi/Documents/decibel-meter/src/DecibelMeter.py
+[Install]
+WantedBy=multi-user.target
