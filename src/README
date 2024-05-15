@@ -1,0 +1,11 @@
+`cp decibel-meter.service /etc/systemd/system/decibel-meter.service`
+
+`sudo systemctl daemon-reload`
+
+`sudo systemctl enable decibel-meter.service`
+
+`sudo systemctl start decibel-meter`
+
+`sudo systemctl stop decibel-meter`
+
+`sudo systemctl restart decibel-meter`
