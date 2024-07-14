@@ -8,15 +8,16 @@ services:
     environment:
     - GF_SERVER_ROOT_URL=http://data.carrollmedia.dev/
     - GF_SERVER_HTTP_ADDR=
-    - GF_SERVER_HTTP_PORT=3012
+    - GF_SERVER_HTTP_PORT=3000
     - GF_SERVER_DOMAIN=carrollmedia.dev
-    - GF_SERVER_CERT_KEY=grafana.key
-    - GF_SERVER_CERT_FILE=grafana.crt
+    - GF_SERVER_CERT_KEY=/var/lib/certs/grafana.key
+    - GF_SERVER_CERT_FILE=/var/lib/certs/grafana.crt
     - GF_SERVER_ENFORCE_DOMAIN=False
     - GF_SERVER_PROTOCOL=https
     ports:
-      - '3012:3000'
+      - '3000:3000'
     volumes:
       - grafana-storage:/var/lib/grafana
+      - $PWD:/var/lib/certs
 volumes:
   grafana-storage: {}
