@@ -188,7 +188,7 @@ class Noise():
       bucket = "environmental"
       org = "carrollmedia"
       token = os.environ['API_TOKEN']
-      url="http://192.168.8.5:8086"
+      url="http://192.168.8.3:8086"
 
       client = influxdb_client.InfluxDBClient(
         url=url,
@@ -207,7 +207,7 @@ class Noise():
       bucket = "environmental"
       org = "carrollmedia"
       token = os.environ['API_TOKEN']
-      url="http://192.168.8.5:8086"
+      url="http://192.168.8.3:8086"
 
       client = influxdb_client.InfluxDBClient(
         url=url,
