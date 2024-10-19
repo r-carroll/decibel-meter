@@ -185,10 +185,10 @@ class Noise():
       """Logging air quality to influx DB"""
 
       pm_value = self.get_pm_value()
-      bucket = "environmental"
-      org = "carrollmedia"
+      bucket = os.environ['BUCKET']
+      org =os.environ['ORG']
       token = os.environ['API_TOKEN']
-      url="http://192.168.8.3:8086"
+      url=os.environ['SERVER_ADDRESS']
 
       client = influxdb_client.InfluxDBClient(
         url=url,
@@ -204,10 +204,10 @@ class Noise():
     def log_db_to_influx(self, db_reading):
       """Logging decibel readings to influx DB"""
 
-      bucket = "environmental"
-      org = "carrollmedia"
+      bucket = os.environ['BUCKET']
+      org =os.environ['ORG']
       token = os.environ['API_TOKEN']
-      url="http://192.168.8.3:8086"
+      url=os.environ['SERVER_ADDRESS']
 
       client = influxdb_client.InfluxDBClient(
         url=url,

@@ -3,3 +3,6 @@ pms5003
 matplotlib
 ltr559
 python-dotenv
+numpy
+PIL
+st7735
