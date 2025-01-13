@@ -5,9 +5,10 @@ This is the companion repo for my talk "Bringing ideas to life with DIY IoT: Vis
 
 #### Setting up the hardware
 1. First, you will need a raspberry pi, I'm using a 3B+, but any model that supports HATs should do. 
+> To set up the pi, it is recommended to [use their imaging software here](https://www.raspberrypi.com/software/)
 2. Get an Enviro module for the PI. I got the base model without air quality, but either will work. You can purchase them online [here](https://shop.pimoroni.com/products/enviro?variant=31155658489939) or from [Microcenter](https://www.microcenter.com/product/656584/pimoroni-enviro-indoor-environmental-monitor)
 3. Attach the enviro to the Pi, simply push it down on the pins, no soldering necessary. You can find full instructions for this [here](https://learn.pimoroni.com/article/getting-started-with-enviro-plus)
-4. Before finding a spot to place your pi, be sure to connect it to your wifi network and take note of its IP address. 
+4. Before finding a spot to place your pi, be sure to connect it to your wifi network and take note of its IP address. [You will also need to enable SSH if you have not done so already](https://www.onlogic.com/blog/how-to-ssh-into-raspberry-pi/). 
 5. Find a good spot inside or outside where you want to capture data and place the pi. Make sure you're able to run power to it, it's within range of wifi, and won't get wet. 
 
 #### Server 

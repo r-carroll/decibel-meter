@@ -1,0 +1,15 @@
+[Unit]
+Description = Decibel Meter
+After = network.target
+ 
+[Service]
+Type = simple
+ExecStart = python3 /home/pi/Documents/decibel-meter/src/DecibelMeter.py
+User = pi
+Restart = always # Restart when there are errors
+SyslogIdentifier = decibel
+RestartSec = 5
+TimeoutStartSec = infinity
+ 
+[Install]
+WantedBy = multi-user.target
