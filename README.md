@@ -16,7 +16,8 @@ Next on the agenda is getting a home server ready to go. Nothing fancy is needed
 
 #### InfluxDB
 1. Pull this repo down on your server, you will then need to open a terminal and navigate to the `influx` folder as you will be running commands and using some of the files.
-2. Next run what is in `setup.sh`. Influx depends on `mytelegraf.conf` being in the right place. You can take a look at the file but shouldn't need to change anything in it. 
+2. Next run what is in `setup.sh`. Influx depends on `mytelegraf.conf` being in the right place. You can take a look at the file but shouldn't need to change anything in it.
+> If you get a permissions error on `setup.sh`, trying running `chmod 777 setup.sh`
 2. Create a `influx2.env` file. You will then need to populate it with your own values, most of these values can be whatever you want to set them to. 
 
 ```
